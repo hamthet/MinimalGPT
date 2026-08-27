@@ -2,15 +2,15 @@
 
 MinimalGPT is a small Chromium extension that reduces visual clutter in ChatGPT while leaving the underlying ChatGPT application intact.
 
-## Version 0.0.2
+## Version 0.0.3
 
 This profile assumes **one conversation per browser tab**.
 
 Minimal mode:
 
 - hides conversation navigation and top chrome when identifiable;
-- hides Share and overflow controls;
-- removes microphone and voice-mode controls;
+- hides Share and response overflow/menu controls;
+- removes microphone, voice and dictation controls;
 - keeps attachments and text-composition tools;
 - reduces response actions to Copy when identifiable;
 - removes UI transitions and decorative composer shadows;
@@ -41,6 +41,13 @@ After updating the repository, reload the extension and then reload the ChatGPT 
 `read → type → send → read → copy`
 
 ## Changelog
+
+### 0.0.3
+
+- broadened microphone/voice/dictation selectors inside the composer;
+- broadened response overflow/menu selectors;
+- broadened retry/regenerate removal so Copy remains the primary response action;
+- no new background observer or interception logic.
 
 ### 0.0.2
 
