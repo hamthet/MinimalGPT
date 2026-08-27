@@ -1,0 +1,95 @@
+/*
+ * MinimalGPT V0
+ * Pure visual layer. It does not intercept ChatGPT requests, authentication,
+ * cookies, API calls, or message data.
+ */
+
+:root {
+  --mgpt-content-width: 820px;
+  --mgpt-page-gutter: 24px;
+  --mgpt-message-gap: 18px;
+  --mgpt-toast-offset: 18px;
+}
+
+/* ---------- Minimal mode ---------- */
+
+html[data-minimalgpt="on"] {
+  scroll-behavior: auto !important;
+}
+
+html[data-minimalgpt="on"] body {
+  overflow-x: hidden !important;
+}
+
+/* Left navigation / conversation history. Multiple semantic selectors are
+   intentionally used because ChatGPT's DOM can change over time. */
+html[data-minimalgpt="on"] #stage-slideover-sidebar,
+html[data-minimalgpt="on"] [data-testid="sidebar"],
+html[data-minimalgpt="on"] [data-testid="conversation-sidebar"],
+html[data-minimalgpt="on"] nav[aria-label*="history" i],
+html[data-minimalgpt="on"] nav[aria-label*="histórico" i],
+html[data-minimalgpt="on"] button[data-testid="open-sidebar-button"],
+html[data-minimalgpt="on"] button[data-testid="close-sidebar-button"] {
+  display: none !important;
+}
+
+/* Top application chrome. Keep this deliberately conservative in V0. */
+html[data-minimalgpt="on"] [data-testid="top-bar"],
+html[data-minimalgpt="on"] [data-testid="chat-header"] {
+  display: none !important;
+}
+
+/* Use the full viewport after the sidebar is hidden. */
+html[data-minimalgpt="on"] main {
+  width: 100% !important;
+  max-width: none !important;
+  margin-inline: 0 !important;
+}
+
+/* Conversation width. These selectors target stable semantic attributes when
+   present and fall back gracefully when ChatGPT changes its markup. */
+html[data-minimalgpt="on"] [data-message-author-role] {
+  max-width: var(--mgpt-content-width) !important;
+  margin-inline: auto !important;
+}
+
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] > div {
+  max-width: calc(var(--mgpt-content-width) + (var(--mgpt-page-gutter) * 2)) !important;
+  margin-inline: auto !important;
+  padding-inline: var(--mgpt-page-gutter) !important;
+}
+
+/* Composer. :has() is supported by current Chromium-based Edge/Chrome. */
+html[data-minimalgpt="on"] main form:has(#prompt-textarea) {
+  width: min(calc(100% - (var(--mgpt-page-gutter) * 2)), var(--mgpt-content-width)) !important;
+  max-width: var(--mgpt-content-width) !important;
+  margin-inline: auto !important;
+}
+
+/* Avoid excessive decorative shadows without changing controls themselves. */
+html[data-minimalgpt="on"] main form:has(#prompt-textarea) > div {
+  box-shadow: none !important;
+}
+
+/* ---------- Toggle feedback ---------- */
+
+#minimalgpt-toast {
+  position: fixed;
+  right: var(--mgpt-toast-offset);
+  bottom: var(--mgpt-toast-offset);
+  z-index: 2147483647;
+  padding: 8px 11px;
+  border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+  border-radius: 8px;
+  background: Canvas;
+  color: CanvasText;
+  font: 600 12px/1.2 system-ui, sans-serif;
+  box-shadow: 0 4px 18px rgb(0 0 0 / 0.12);
+  pointer-events: none;
+}
+
+/* ---------- Original mode ---------- */
+
+html[data-minimalgpt="off"] #minimalgpt-toast {
+  /* The toast itself remains visible briefly so the OFF confirmation can be read. */
+}
