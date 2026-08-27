@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "MinimalGPT",
-  "version": "0.0.1",
-  "description": "A minimal visual layer for ChatGPT. No API interception, no account access, no remote code.",
+  "version": "0.0.2",
+  "description": "A low-clutter visual layer for ChatGPT. No API interception, no account access, no remote code.",
   "permissions": ["storage"],
   "content_scripts": [
     {
