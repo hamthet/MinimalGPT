@@ -1,17 +1,18 @@
 /*
- * MinimalGPT V0
- * Pure visual layer. It does not intercept ChatGPT requests, authentication,
- * cookies, API calls, or message data.
+ * MinimalGPT 0.0.2
+ * Low-clutter visual layer for a single open ChatGPT conversation.
+ * No request interception, authentication access, remote code, polling,
+ * or MutationObserver.
  */
 
 :root {
-  --mgpt-content-width: 820px;
+  --mgpt-content-width: 800px;
   --mgpt-page-gutter: 24px;
-  --mgpt-message-gap: 18px;
   --mgpt-toast-offset: 18px;
+  --mgpt-reading-line-height: 1.62;
 }
 
-/* ---------- Minimal mode ---------- */
+/* ---------- Calm / predictable base ---------- */
 
 html[data-minimalgpt="on"] {
   scroll-behavior: auto !important;
@@ -21,8 +22,18 @@ html[data-minimalgpt="on"] body {
   overflow-x: hidden !important;
 }
 
-/* Left navigation / conversation history. Multiple semantic selectors are
-   intentionally used because ChatGPT's DOM can change over time. */
+/* Remove motion caused by hover/focus transitions without interfering with
+   ChatGPT's networking, streaming, or state logic. */
+html[data-minimalgpt="on"] *,
+html[data-minimalgpt="on"] *::before,
+html[data-minimalgpt="on"] *::after {
+  transition: none !important;
+}
+
+/* ---------- Navigation / application chrome ---------- */
+
+/* This build assumes one conversation per tab, so conversation navigation is
+   intentionally treated as disposable chrome. */
 html[data-minimalgpt="on"] #stage-slideover-sidebar,
 html[data-minimalgpt="on"] [data-testid="sidebar"],
 html[data-minimalgpt="on"] [data-testid="conversation-sidebar"],
@@ -33,21 +44,42 @@ html[data-minimalgpt="on"] button[data-testid="close-sidebar-button"] {
   display: none !important;
 }
 
-/* Top application chrome. Keep this deliberately conservative in V0. */
+/* Current ChatGPT builds do not expose one permanent header selector. In this
+   deliberately single-conversation profile, semantic headers are expendable. */
 html[data-minimalgpt="on"] [data-testid="top-bar"],
-html[data-minimalgpt="on"] [data-testid="chat-header"] {
+html[data-minimalgpt="on"] [data-testid="chat-header"],
+html[data-minimalgpt="on"] header {
   display: none !important;
 }
 
-/* Use the full viewport after the sidebar is hidden. */
+/* Share controls are never needed in this profile. */
+html[data-minimalgpt="on"] button[aria-label="Compartilhar" i],
+html[data-minimalgpt="on"] button[aria-label="Share" i],
+html[data-minimalgpt="on"] button[title="Compartilhar" i],
+html[data-minimalgpt="on"] button[title="Share" i],
+html[data-minimalgpt="on"] [data-testid*="share-chat" i],
+html[data-minimalgpt="on"] [data-testid*="share-button" i] {
+  display: none !important;
+}
+
+/* Overflow / three-dot controls. Scope broad enough for the current isolated
+   use case, while leaving ordinary composer/tool buttons alone. */
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label="Mais" i],
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label="More" i],
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label*="mais opções" i],
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label*="more options" i],
+html[data-minimalgpt="on"] button[data-testid*="overflow" i] {
+  display: none !important;
+}
+
+/* ---------- Conversation ---------- */
+
 html[data-minimalgpt="on"] main {
   width: 100% !important;
   max-width: none !important;
   margin-inline: 0 !important;
 }
 
-/* Conversation width. These selectors target stable semantic attributes when
-   present and fall back gracefully when ChatGPT changes its markup. */
 html[data-minimalgpt="on"] [data-message-author-role] {
   max-width: var(--mgpt-content-width) !important;
   margin-inline: auto !important;
@@ -59,16 +91,73 @@ html[data-minimalgpt="on"] [data-testid^="conversation-turn"] > div {
   padding-inline: var(--mgpt-page-gutter) !important;
 }
 
-/* Composer. :has() is supported by current Chromium-based Edge/Chrome. */
+/* A stable reading rhythm reduces visual re-parsing in long technical answers. */
+html[data-minimalgpt="on"] [data-message-author-role="assistant"] .markdown {
+  line-height: var(--mgpt-reading-line-height) !important;
+}
+
+/* Keep only the action that is actually useful after a response: Copy.
+   First use ChatGPT's semantic test ids when available, then aria-label
+   fallbacks for current UI variants. */
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] [data-testid*="turn-action-button" i]:not([data-testid*="copy" i]),
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label="Good response" i],
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label="Bad response" i],
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label="Boa resposta" i],
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label="Resposta ruim" i],
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label*="read aloud" i],
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label*="ler em voz alta" i],
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label*="regenerate" i],
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label*="regenerar" i],
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label*="retry" i],
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label*="tentar novamente" i] {
+  display: none !important;
+}
+
+/* Copy remains visible but visually quiet. */
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] [data-testid*="copy" i],
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label="Copy" i],
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label="Copiar" i] {
+  opacity: 0.68 !important;
+}
+
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] [data-testid*="copy" i]:hover,
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] [data-testid*="copy" i]:focus-visible,
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label="Copy" i]:hover,
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label="Copiar" i]:hover {
+  opacity: 1 !important;
+}
+
+/* ---------- Composer ---------- */
+
 html[data-minimalgpt="on"] main form:has(#prompt-textarea) {
   width: min(calc(100% - (var(--mgpt-page-gutter) * 2)), var(--mgpt-content-width)) !important;
   max-width: var(--mgpt-content-width) !important;
   margin-inline: auto !important;
 }
 
-/* Avoid excessive decorative shadows without changing controls themselves. */
 html[data-minimalgpt="on"] main form:has(#prompt-textarea) > div {
   box-shadow: none !important;
+}
+
+/* Remove microphone / voice entry points while preserving attachments and
+   other text-composition tools. */
+html[data-minimalgpt="on"] button[aria-label*="microfone" i],
+html[data-minimalgpt="on"] button[aria-label*="microphone" i],
+html[data-minimalgpt="on"] button[aria-label*="modo de voz" i],
+html[data-minimalgpt="on"] button[aria-label*="voice mode" i],
+html[data-minimalgpt="on"] button[aria-label*="iniciar voz" i],
+html[data-minimalgpt="on"] button[aria-label*="start voice" i],
+html[data-minimalgpt="on"] [data-testid*="microphone" i],
+html[data-minimalgpt="on"] [data-testid*="voice-mode" i],
+html[data-minimalgpt="on"] [data-testid*="composer-speech" i] {
+  display: none !important;
+}
+
+/* Avoid decorative elevation around the primary work area. */
+html[data-minimalgpt="on"] main form:has(#prompt-textarea),
+html[data-minimalgpt="on"] main form:has(#prompt-textarea) * {
+  --tw-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
 }
 
 /* ---------- Toggle feedback ---------- */
@@ -78,18 +167,12 @@ html[data-minimalgpt="on"] main form:has(#prompt-textarea) > div {
   right: var(--mgpt-toast-offset);
   bottom: var(--mgpt-toast-offset);
   z-index: 2147483647;
-  padding: 8px 11px;
-  border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
-  border-radius: 8px;
+  padding: 7px 10px;
+  border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+  border-radius: 7px;
   background: Canvas;
   color: CanvasText;
   font: 600 12px/1.2 system-ui, sans-serif;
-  box-shadow: 0 4px 18px rgb(0 0 0 / 0.12);
+  box-shadow: none;
   pointer-events: none;
-}
-
-/* ---------- Original mode ---------- */
-
-html[data-minimalgpt="off"] #minimalgpt-toast {
-  /* The toast itself remains visible briefly so the OFF confirmation can be read. */
 }
