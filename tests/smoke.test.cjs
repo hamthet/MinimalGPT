@@ -118,14 +118,30 @@ test('manifest is narrowly scoped and accurately identifies archival status', ()
   assert.deepEqual(manifest.permissions, ['storage']);
   assert.deepEqual(manifest.content_scripts[0].matches, ['https://chatgpt.com/*']);
   assert.match(manifest.name, /discontinued/i);
-  assert.equal(manifest.version, '0.0.4');
+  assert.equal(manifest.version, '0.0.5');
 });
 
 test('CSS is opt-in and avoids known dangerous blanket selectors', () => {
   assert.match(css, /html\[data-minimalgpt="on"\]/);
   assert.doesNotMatch(css, /html\[data-minimalgpt="on"\]\s+header\s*[,\{]/);
   assert.doesNotMatch(css, /\[data-testid\*="(?:audio|voice|more)"/);
-  assert.doesNotMatch(css, /turn-action-button[^\n]*:not\(/);
   assert.doesNotMatch(css, /html\[data-minimalgpt="on"\]\s+main\s*\{/);
   assert.match(css, /#minimalgpt-toast/);
+});
+
+test('sidebar and top chrome cover alternate shells without blanketing page elements', () => {
+  for (const hook of [
+    '#stage-slideover-sidebar', '#stage-sidebar-tiny-bar', '#sidebar',
+    '#page-header', '[data-testid="chat-header"]',
+    'aside:has(nav[aria-label*="chat history" i])'
+  ]) assert.ok(css.includes(hook), `Missing selector fallback: ${hook}`);
+  assert.doesNotMatch(css, /html\[data-minimalgpt="on"\]\s+(?:aside|nav|header)\s*[,\{]/);
+});
+
+test('turn actions leave Copy and composer controls available', () => {
+  assert.match(css, /button\[data-testid\$="-turn-action-button"\]:not\(\[data-testid\*="copy" i\]\)/);
+  assert.doesNotMatch(css, /\[data-testid\$="-action-buttons"\][^\n]*display:\s*none/i);
+  assert.doesNotMatch(css, /button\[data-testid\*="copy"[^\n]*display:\s*none/i);
+  assert.match(css, /form\[data-type="unified-composer"\]/);
+  assert.doesNotMatch(css, /\[data-testid\*="(?:audio|upload|attachment|send)"/);
 });
