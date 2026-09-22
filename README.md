@@ -3,7 +3,7 @@
 > [!WARNING]
 > **Discontinued — update required.** The author reports that version 0.0.3 worked previously but did not work on a later attempt. Version 0.0.4 is an archival safety revision, **not a verified compatibility update**. Compatibility with the current ChatGPT interface has **not been verified**. This repository is reference code, not a supported, ready-to-use extension.
 
-**English** · [Português (Brasil)](docs/README.pt-BR.md)
+**English** · [Português (Brasil)](docs/README.pt-BR.md) · [Español](docs/README.es.md)
 
 MinimalGPT is an experimental Chromium Manifest V3 extension that reduces visual clutter in ChatGPT without replacing the underlying application. It is designed for **one conversation per browser tab**.
 
@@ -24,7 +24,9 @@ MinimalGPT does not intercept requests, access account credentials, load remote 
 - `manifest.json` — extension configuration, default locale, and permissions.
 - `_locales/en/messages.json` — English extension name, description, and status messages.
 - `_locales/pt_BR/messages.json` — Brazilian Portuguese extension name, description, and status messages.
+- `_locales/es/messages.json` — Spanish extension name, description, and status messages.
 - `docs/README.pt-BR.md` — complete Brazilian Portuguese documentation.
+- `docs/README.es.md` — complete Spanish documentation.
 - `minimal.css` — opt-in presentation rules; unchanged by localization.
 - `content.js` — local preference, `Alt+M` toggle, and localized status notice.
 - `tests/` — dependency-free static and content-script smoke tests (not live-browser compatibility tests).
@@ -32,9 +34,9 @@ MinimalGPT does not intercept requests, access account credentials, load remote 
 
 ## Languages
 
-**English (`en`) is the default; Brazilian Portuguese (`pt_BR`) is also available.** Chrome selects the available locale from the browser language and falls back to English where a matching translation is unavailable. Spanish (`es`), Russian (`ru`), and Simplified Chinese (`zh_CN`) are planned but are not yet shipped. The ChatGPT website's language is independent of the extension's language; localizing the status notice does not update the website's CSS selectors or restore compatibility.
+**English (`en`) is the default; Brazilian Portuguese (`pt_BR`) and Spanish (`es`) are also available.** Chrome selects the available locale from the browser language and falls back to English where a matching translation is unavailable. Russian (`ru`) and Simplified Chinese (`zh_CN`) are planned but are not yet shipped. The ChatGPT website's language is independent of the extension's language; localizing the status notice does not update the website's CSS selectors or restore compatibility.
 
-This README is in English. The [Brazilian Portuguese documentation](docs/README.pt-BR.md) is a complete translation. Other language-specific READMEs will be added only when their translations are completed.
+This README is in English. The [Brazilian Portuguese documentation](docs/README.pt-BR.md) and [Spanish documentation](docs/README.es.md) are complete translations. Other language-specific READMEs will be added only when their translations are completed.
 
 ## Install for local inspection (at your own risk)
 
@@ -48,7 +50,7 @@ The local preference persists across reloads; installations that already saved `
 
 ## Checks and limitations
 
-Run `node --test tests/*.test.cjs` with Node.js 22 for local smoke checks. These validate the manifest, English and Brazilian Portuguese localization keys, static CSS safeguards, and mocked toggle/storage behavior, but **cannot verify the current ChatGPT interface, accessibility, or end-to-end behavior**. Manual browser testing would be required before describing a build as compatible.
+Run `node --test tests/*.test.cjs` with Node.js 22 for local smoke checks. These validate the manifest, available localization keys, static CSS safeguards, and mocked toggle/storage behavior, but **cannot verify the current ChatGPT interface, accessibility, or end-to-end behavior**. Manual browser testing would be required before describing a build as compatible.
 
 Known limitations: the extension relies on private, undocumented ChatGPT DOM attributes; features, languages, and layouts vary; no automatic compatibility detection or self-repair is implemented. Avoid adding broad rules such as hiding every `header`, hiding all non-Copy controls indiscriminately, or hiding arbitrary elements merely because their test ID contains `audio`.
 
