@@ -1,0 +1,22 @@
+{
+  "extensionName": {
+    "message": "MinimalGPT（已停止维护）",
+    "description": "Chromium 扩展程序列表中显示的名称。"
+  },
+  "extensionDescription": {
+    "message": "用于简化 ChatGPT 界面的实验性扩展程序，已停止维护。需要更新；兼容性未经验证。不拦截网络请求，也不加载远程代码。",
+    "description": "Chromium 扩展程序列表中显示的说明。"
+  },
+  "statusOn": {
+    "message": "已开启",
+    "description": "极简模式开启时显示的状态。"
+  },
+  "statusOff": {
+    "message": "已关闭",
+    "description": "极简模式关闭时显示的状态。"
+  },
+  "discontinuedNotice": {
+    "message": "项目已停止维护 / 需要更新",
+    "description": "扩展程序状态提示中显示的简短警告。"
+  }
+}
