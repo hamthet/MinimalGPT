@@ -1,65 +1,51 @@
 # MinimalGPT
 
-MinimalGPT is a small Chromium extension that reduces visual clutter in ChatGPT while leaving the underlying ChatGPT application intact.
+> [!WARNING]
+> **Projeto descontinuado — necessita de atualização.** A versão 0.0.3 funcionava na última utilização relatada pelo autor, mas deixou de funcionar em uma tentativa posterior. A compatibilidade com o ChatGPT atual **não foi verificada**. Este repositório é disponibilizado como código de referência, não como uma extensão pronta para uso ou com manutenção ativa.
+>
+> **Discontinued — update required.** The author reports that version 0.0.3 worked previously but did not work on a later attempt. Compatibility with the current ChatGPT interface **has not been verified**. This repository is provided for reference, not as a supported, ready-to-use extension.
 
-## Version 0.0.3
+MinimalGPT is an experimental Chromium Manifest V3 extension that reduces visual clutter in ChatGPT without replacing the underlying application. It is designed for **one conversation per browser tab**.
 
-This profile assumes **one conversation per browser tab**.
+## Project status
 
-Minimal mode:
+**Discontinued / unmaintained.** The last known working state is the author's earlier use of version 0.0.3; the cause and scope of the subsequently reported failure are unknown. ChatGPT's interface changes independently of this extension, so selectors may become obsolete. The maintenance changes proposed after 0.0.3 limit collateral UI damage but **do not establish that the extension works today**. There is no guarantee of updates, compatibility, or support. No official affiliation with OpenAI or ChatGPT is claimed.
 
-- hides conversation navigation and top chrome when identifiable;
-- hides Share and response overflow/menu controls;
-- removes microphone, voice and dictation controls;
-- keeps attachments and text-composition tools;
-- reduces response actions to Copy when identifiable;
-- removes UI transitions and decorative composer shadows;
-- normalizes reading width and line-height;
-- toggles with `Alt+M` and stores the local ON/OFF state.
+If a page is missing controls or looks broken, turn MinimalGPT off with `Alt+M`, then reload the ChatGPT tab. If the shortcut fails, disable or remove the extension at `chrome://extensions/` and reload the page. Do not rely on this project for critical workflows.
+
+## Intended behavior
+
+When manually enabled, the CSS-first profile attempts to hide identifiable sidebar and top-bar controls, Share and selected voice/dictation controls, and selected response actions; it retains the composer, attachments, sending and copying. It also reduces decorative shadows and movement and adjusts reading width where identifiable. The exact result depends on ChatGPT's current DOM and locale.
+
+MinimalGPT does not intercept requests, access account credentials, load remote code, or install a DOM observer. It requests only Chromium's `storage` permission. The extension runs only on `https://chatgpt.com/*` and stores one local ON/OFF preference. Read the small source files before installing an unmaintained extension.
 
 ## Files
 
-- `manifest.json` — Manifest V3 configuration.
-- `minimal.css` — visual simplification layer.
-- `content.js` — toggle state, persistence, shortcut and status toast.
+- `manifest.json` — extension configuration and permissions.
+- `minimal.css` — opt-in presentation rules.
+- `content.js` — local preference, `Alt+M` toggle, and brief status notice.
+- `tests/` — dependency-free static and content-script smoke tests (not live-browser compatibility tests).
 
-The current version remains CSS-first and does not use DOM polling or `MutationObserver`.
+## Install for local inspection (at your own risk)
 
-## Local installation
+1. Download or clone this repository and inspect its contents.
+2. In Chromium, open `chrome://extensions/`, enable **Developer mode**, and select **Load unpacked**.
+3. Select the folder containing `manifest.json`.
+4. Reload `https://chatgpt.com/`. A new installation starts **OFF** for safety; press `Alt+M` to opt in.
+5. To apply source changes, reload the extension at `chrome://extensions/` and then reload the ChatGPT tab.
 
-1. Clone or download this repository.
-2. Open the browser extensions page.
-3. Enable Developer mode.
-4. Choose **Load unpacked**.
-5. Select the folder containing `manifest.json`.
-6. Open or reload `https://chatgpt.com/`.
+The local preference persists across reloads; installations that already saved `ON` remain enabled until explicitly turned off. Browser or website shortcuts may conflict with `Alt+M`. If the shortcut cannot be used, disable the extension in Chromium's extensions page.
 
-After updating the repository, reload the extension and then reload the ChatGPT tab.
+## Checks and limitations
 
-## Interaction target
+Run `node --test tests/*.test.cjs` with a recent Node.js version for local smoke checks. These validate the manifest, static CSS safeguards, and mocked toggle/storage behavior, but **cannot verify the current ChatGPT interface, accessibility, or end-to-end behavior**. Manual browser testing would be required before describing a build as compatible.
 
-`read → type → send → read → copy`
+Known limitations: the extension relies on private, undocumented ChatGPT DOM attributes; features, languages, and layouts vary; no automatic compatibility detection or self-repair is implemented. Avoid adding broad rules such as hiding every `header`, hiding all non-Copy controls indiscriminately, or hiding arbitrary elements merely because their test ID contains `audio`.
 
-## Changelog
+## Version history
 
-### 0.0.3
+- **0.0.3 (2026-08-27):** selector updates for voice/dictation and response actions; last version the author reports previously worked, with a later failure reported.
+- **0.0.2:** single-conversation low-clutter profile and reduced movement.
+- **0.0.1:** initial Manifest V3 extension, `Alt+M` toggle, and local persistence.
 
-- broadened microphone/voice/dictation selectors inside the composer;
-- broadened response overflow/menu selectors;
-- broadened retry/regenerate removal so Copy remains the primary response action;
-- no new background observer or interception logic.
-
-### 0.0.2
-
-- single-conversation low-clutter profile;
-- Share and overflow controls removed where identifiable;
-- microphone and voice controls removed;
-- response actions reduced to Copy where identifiable;
-- reduced motion and decorative elevation;
-- normalized reading width and rhythm.
-
-### 0.0.1
-
-- initial Manifest V3 extension;
-- `Alt+M` toggle and local persistence;
-- basic sidebar/header hiding and conversation-width adjustments.
+The current repository's maintenance hardening and discontinuation notice are not a verified compatibility release. No open-source license has been granted in this repository; public visibility alone does not grant permission to redistribute or modify the code. The author may choose a license separately.
