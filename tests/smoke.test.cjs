@@ -10,8 +10,9 @@ const root = path.join(__dirname, '..');
 const script = fs.readFileSync(path.join(root, 'content.js'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'minimal.css'), 'utf8');
 const manifest = JSON.parse(fs.readFileSync(path.join(root, 'manifest.json'), 'utf8'));
+const english = JSON.parse(fs.readFileSync(path.join(root, '_locales/en/messages.json'), 'utf8'));
 
-function harness({ stored, delayed = false, storageError = false } = {}) {
+function harness({ stored, delayed = false, storageError = false, messages = english } = {}) {
   const attributes = new Map();
   const listeners = new Map();
   const writes = [];
@@ -35,6 +36,7 @@ function harness({ stored, delayed = false, storageError = false } = {}) {
     }
   };
   const chrome = {
+    i18n: { getMessage(key) { return messages[key]?.message || ''; } },
     runtime: { lastError: storageError ? { message: 'unavailable' } : undefined },
     storage: { local: {
       get(_defaults, callback) {
@@ -113,12 +115,42 @@ test('unrelated keys, repeat, IME and modified shortcuts are untouched', () => {
   assert.equal(app.writes.length, 0);
 });
 
-test('manifest is narrowly scoped and accurately identifies archival status', () => {
+test('manifest is narrowly scoped and identifies archival status through the English catalog', () => {
   assert.equal(manifest.manifest_version, 3);
   assert.deepEqual(manifest.permissions, ['storage']);
   assert.deepEqual(manifest.content_scripts[0].matches, ['https://chatgpt.com/*']);
-  assert.match(manifest.name, /discontinued/i);
+  assert.equal(manifest.default_locale, 'en');
+  assert.equal(manifest.name, '__MSG_extensionName__');
+  assert.equal(manifest.description, '__MSG_extensionDescription__');
+  assert.match(english.extensionName.message, /discontinued/i);
+  assert.match(english.extensionDescription.message, /compatibility unverified/i);
   assert.equal(manifest.version, '0.0.4');
+});
+
+test('English catalog has complete, nonempty messages for every user-facing string', () => {
+  for (const key of [
+    'extensionName', 'extensionDescription', 'statusOn', 'statusOff', 'discontinuedNotice'
+  ]) {
+    assert.equal(typeof english[key]?.message, 'string', key);
+    assert.ok(english[key].message.trim(), key);
+    assert.ok(english[key].description?.trim(), `${key} translator description`);
+  }
+});
+
+test('status notice uses localized messages and falls back to English for missing keys', () => {
+  const localized = harness({ messages: {
+    statusOn: { message: 'ENABLED' },
+    statusOff: { message: 'DISABLED' },
+    discontinuedNotice: { message: 'no longer maintained' }
+  } });
+  localized.key();
+  assert.equal(localized.toast().textContent, 'MinimalGPT: ENABLED · no longer maintained');
+  localized.key();
+  assert.equal(localized.toast().textContent, 'MinimalGPT: DISABLED · no longer maintained');
+
+  const fallback = harness({ messages: {} });
+  fallback.key();
+  assert.equal(fallback.toast().textContent, 'MinimalGPT: ON · discontinued / update required');
 });
 
 test('CSS is opt-in and avoids known dangerous blanket selectors', () => {
