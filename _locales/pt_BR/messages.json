@@ -1,0 +1,22 @@
+{
+  "extensionName": {
+    "message": "MinimalGPT (descontinuado)",
+    "description": "Nome exibido pelo Chromium na página de extensões."
+  },
+  "extensionDescription": {
+    "message": "Extensão visual experimental para o ChatGPT, descontinuada. Precisa de atualização; compatibilidade não verificada. Sem interceptação de rede ou código remoto.",
+    "description": "Descrição exibida pelo Chromium na página de extensões."
+  },
+  "statusOn": {
+    "message": "ATIVADO",
+    "description": "Estado exibido quando o modo minimalista está ativado."
+  },
+  "statusOff": {
+    "message": "DESATIVADO",
+    "description": "Estado exibido quando o modo minimalista está desativado."
+  },
+  "discontinuedNotice": {
+    "message": "projeto descontinuado / precisa de atualização",
+    "description": "Aviso breve apresentado na notificação de estado da extensão."
+  }
+}
