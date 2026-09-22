@@ -3,7 +3,7 @@
 > [!WARNING]
 > **Discontinued — update required.** The author reports that version 0.0.3 worked previously but did not work on a later attempt. Version 0.0.4 is an archival safety revision, **not a verified compatibility update**. Compatibility with the current ChatGPT interface has **not been verified**. This repository is reference code, not a supported, ready-to-use extension.
 
-**English** · [Português (Brasil)](docs/README.pt-BR.md) · [Español](docs/README.es.md) · [Русский](docs/README.ru.md)
+**English** · [Português (Brasil)](docs/README.pt-BR.md) · [Español](docs/README.es.md) · [Русский](docs/README.ru.md) · [简体中文](docs/README.zh-CN.md)
 
 MinimalGPT is an experimental Chromium Manifest V3 extension that reduces visual clutter in ChatGPT without replacing the underlying application. It is designed for **one conversation per browser tab**.
 
@@ -26,9 +26,11 @@ MinimalGPT does not intercept requests, access account credentials, load remote 
 - `_locales/pt_BR/messages.json` — Brazilian Portuguese extension name, description, and status messages.
 - `_locales/es/messages.json` — Spanish extension name, description, and status messages.
 - `_locales/ru/messages.json` — Russian extension name, description, and status messages.
+- `_locales/zh_CN/messages.json` — Simplified Chinese extension name, description, and status messages.
 - `docs/README.pt-BR.md` — complete Brazilian Portuguese documentation.
 - `docs/README.es.md` — complete Spanish documentation.
 - `docs/README.ru.md` — complete Russian documentation.
+- `docs/README.zh-CN.md` — complete Simplified Chinese documentation.
 - `minimal.css` — opt-in presentation rules; unchanged by localization.
 - `content.js` — local preference, `Alt+M` toggle, and localized status notice.
 - `tests/` — dependency-free static and content-script smoke tests (not live-browser compatibility tests).
@@ -36,9 +38,9 @@ MinimalGPT does not intercept requests, access account credentials, load remote 
 
 ## Languages
 
-**English (`en`) is the default; Brazilian Portuguese (`pt_BR`), Spanish (`es`), and Russian (`ru`) are also available.** Chrome selects the available locale from the browser language and falls back to English where a matching translation is unavailable. Simplified Chinese (`zh_CN`) is planned but is not yet shipped. The ChatGPT website's language is independent of the extension's language; localizing the status notice does not update the website's CSS selectors or restore compatibility.
+**English (`en`) is the default; Brazilian Portuguese (`pt_BR`), Spanish (`es`), Russian (`ru`), and Simplified Chinese (`zh_CN`) are also available.** All five planned locales are now included; Traditional Chinese is not included. Chrome selects the available locale from the browser language and falls back to English where a matching translation is unavailable. The ChatGPT website's language is independent of the extension's language; localizing the status notice does not update the website's CSS selectors or restore compatibility.
 
-This README is in English. The [Brazilian Portuguese documentation](docs/README.pt-BR.md), [Spanish documentation](docs/README.es.md), and [Russian documentation](docs/README.ru.md) are complete translations. Other language-specific READMEs will be added only when their translations are completed.
+This README is in English. The [Brazilian Portuguese documentation](docs/README.pt-BR.md), [Spanish documentation](docs/README.es.md), [Russian documentation](docs/README.ru.md), and [Simplified Chinese documentation](docs/README.zh-CN.md) are complete translations.
 
 ## Install for local inspection (at your own risk)
 
