@@ -1,48 +1,29 @@
 /*
- * MinimalGPT 0.0.3
- * Low-clutter visual layer for a single open ChatGPT conversation.
- * No request interception, authentication access, remote code, polling,
- * or MutationObserver.
+ * MinimalGPT archival safety maintenance (0.0.4).
+ * ChatGPT compatibility is UNVERIFIED. No request interception, remote code,
+ * polling, DOM mutation, or broad page-wide header/button suppression.
+ * Every visual modification is gated behind the explicit ON state.
  */
 
-:root {
+html[data-minimalgpt="on"] {
   --mgpt-content-width: 800px;
   --mgpt-page-gutter: 24px;
   --mgpt-toast-offset: 18px;
   --mgpt-reading-line-height: 1.62;
-}
-
-/* ---------- Calm / predictable base ---------- */
-
-html[data-minimalgpt="on"] {
   scroll-behavior: auto !important;
 }
 
-html[data-minimalgpt="on"] body {
-  overflow-x: hidden !important;
-}
-
-html[data-minimalgpt="on"] *,
-html[data-minimalgpt="on"] *::before,
-html[data-minimalgpt="on"] *::after {
-  transition: none !important;
-}
-
-/* ---------- Navigation / application chrome ---------- */
-
+/* Target known navigation elements only. Never hide every header or nav:
+   ChatGPT uses those elements for content and essential controls as well. */
 html[data-minimalgpt="on"] #stage-slideover-sidebar,
 html[data-minimalgpt="on"] [data-testid="sidebar"],
 html[data-minimalgpt="on"] [data-testid="conversation-sidebar"],
-html[data-minimalgpt="on"] nav[aria-label*="history" i],
-html[data-minimalgpt="on"] nav[aria-label*="histórico" i],
-html[data-minimalgpt="on"] button[data-testid="open-sidebar-button"],
-html[data-minimalgpt="on"] button[data-testid="close-sidebar-button"] {
-  display: none !important;
-}
-
+html[data-minimalgpt="on"] nav[aria-label="Chat history" i],
+html[data-minimalgpt="on"] nav[aria-label="Histórico de chats" i],
 html[data-minimalgpt="on"] [data-testid="top-bar"],
 html[data-minimalgpt="on"] [data-testid="chat-header"],
-html[data-minimalgpt="on"] header {
+html[data-minimalgpt="on"] button[data-testid="open-sidebar-button"],
+html[data-minimalgpt="on"] button[data-testid="close-sidebar-button"] {
   display: none !important;
 }
 
@@ -50,149 +31,80 @@ html[data-minimalgpt="on"] button[aria-label="Compartilhar" i],
 html[data-minimalgpt="on"] button[aria-label="Share" i],
 html[data-minimalgpt="on"] button[title="Compartilhar" i],
 html[data-minimalgpt="on"] button[title="Share" i],
-html[data-minimalgpt="on"] [data-testid*="share-chat" i],
-html[data-minimalgpt="on"] [data-testid*="share-button" i] {
+html[data-minimalgpt="on"] [data-testid="share-chat-button"],
+html[data-minimalgpt="on"] [data-testid="share-button"] {
   display: none !important;
 }
 
-/* Conversation action menus: intentionally broad for the one-chat-per-tab
-   profile. Only the Copy response action is considered essential. */
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label="Mais" i],
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label="More" i],
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label*="mais opções" i],
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label*="more options" i],
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label*="ações" i],
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label*="actions" i],
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[title*="mais" i],
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[title*="more" i],
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[title*="opções" i],
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[title*="options" i],
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[data-testid*="overflow" i],
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[data-testid*="more" i],
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[data-testid*="menu" i],
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-haspopup="menu"] {
-  display: none !important;
-}
-
-/* ---------- Conversation ---------- */
-
-html[data-minimalgpt="on"] main {
-  width: 100% !important;
-  max-width: none !important;
-  margin-inline: 0 !important;
-}
-
-html[data-minimalgpt="on"] [data-message-author-role] {
-  max-width: var(--mgpt-content-width) !important;
-  margin-inline: auto !important;
-}
-
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] > div {
-  max-width: calc(var(--mgpt-content-width) + (var(--mgpt-page-gutter) * 2)) !important;
-  margin-inline: auto !important;
-  padding-inline: var(--mgpt-page-gutter) !important;
-}
-
-html[data-minimalgpt="on"] [data-message-author-role="assistant"] .markdown {
-  line-height: var(--mgpt-reading-line-height) !important;
-}
-
-/* Keep only Copy. Current and fallback selectors cover the response action
-   bar without needing to observe or rewrite the DOM. */
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] [data-testid*="turn-action-button" i]:not([data-testid*="copy" i]),
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[data-testid*="retry" i],
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[data-testid*="regenerate" i],
+/* Narrow, explicit response actions: never hide the entire action bar,
+   every non-Copy button, or generic menus used by other ChatGPT features. */
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[data-testid="good-response-turn-action-button"],
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[data-testid="bad-response-turn-action-button"],
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[data-testid="read-aloud-turn-action-button"],
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[data-testid="retry-turn-action-button"],
 html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label="Good response" i],
 html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label="Bad response" i],
 html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label="Boa resposta" i],
 html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label="Resposta ruim" i],
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label*="read aloud" i],
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label*="ler em voz alta" i],
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label*="regenerate" i],
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label*="regenerar" i],
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label*="retry" i],
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label*="try again" i],
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label*="tentar novamente" i],
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label*="tentar de novo" i],
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[title*="retry" i],
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[title*="try again" i],
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[title*="tentar novamente" i] {
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label="Read aloud" i],
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label="Ler em voz alta" i],
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label="Retry" i],
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label="Regenerar" i] {
   display: none !important;
 }
 
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] [data-testid*="copy" i],
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label="Copy" i],
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label="Copiar" i],
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label*="Copy response" i],
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label*="Copiar resposta" i] {
-  opacity: 0.68 !important;
+/* Preserve ChatGPT's own layout: resize text only, not all main descendants. */
+html[data-minimalgpt="on"] [data-message-author-role="assistant"] .markdown {
+  max-width: var(--mgpt-content-width);
+  line-height: var(--mgpt-reading-line-height) !important;
 }
 
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] [data-testid*="copy" i]:hover,
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] [data-testid*="copy" i]:focus-visible,
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label*="Copy" i]:hover,
-html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label*="Copiar" i]:hover {
-  opacity: 1 !important;
-}
-
-/* ---------- Composer ---------- */
-
-html[data-minimalgpt="on"] main form:has(#prompt-textarea) {
+/* These selectors intentionally fail open if ChatGPT changes its composer. */
+html[data-minimalgpt="on"] main form:has(#prompt-textarea),
+html[data-minimalgpt="on"] main form:has([data-testid="composer-input"]) {
   width: min(calc(100% - (var(--mgpt-page-gutter) * 2)), var(--mgpt-content-width)) !important;
   max-width: var(--mgpt-content-width) !important;
   margin-inline: auto !important;
 }
 
-html[data-minimalgpt="on"] main form:has(#prompt-textarea) > div {
+html[data-minimalgpt="on"] main form:has(#prompt-textarea) > div,
+html[data-minimalgpt="on"] main form:has([data-testid="composer-input"]) > div {
   box-shadow: none !important;
 }
 
-/* Voice / microphone / dictation controls. ChatGPT has used several names for
-   the same entry point; match them only inside the active composer. */
-html[data-minimalgpt="on"] form:has(#prompt-textarea) button[aria-label*="microfone" i],
-html[data-minimalgpt="on"] form:has(#prompt-textarea) button[aria-label*="microphone" i],
-html[data-minimalgpt="on"] form:has(#prompt-textarea) button[aria-label*="modo de voz" i],
-html[data-minimalgpt="on"] form:has(#prompt-textarea) button[aria-label*="voice mode" i],
-html[data-minimalgpt="on"] form:has(#prompt-textarea) button[aria-label*="voz" i],
-html[data-minimalgpt="on"] form:has(#prompt-textarea) button[aria-label*="voice" i],
-html[data-minimalgpt="on"] form:has(#prompt-textarea) button[aria-label*="ditado" i],
-html[data-minimalgpt="on"] form:has(#prompt-textarea) button[aria-label*="dictat" i],
-html[data-minimalgpt="on"] form:has(#prompt-textarea) button[aria-label*="gravar" i],
-html[data-minimalgpt="on"] form:has(#prompt-textarea) button[aria-label*="record" i],
-html[data-minimalgpt="on"] form:has(#prompt-textarea) button[aria-label*="áudio" i],
-html[data-minimalgpt="on"] form:has(#prompt-textarea) button[aria-label*="audio" i],
-html[data-minimalgpt="on"] form:has(#prompt-textarea) button[title*="microfone" i],
-html[data-minimalgpt="on"] form:has(#prompt-textarea) button[title*="microphone" i],
-html[data-minimalgpt="on"] form:has(#prompt-textarea) button[title*="ditado" i],
-html[data-minimalgpt="on"] form:has(#prompt-textarea) button[title*="dictat" i],
-html[data-minimalgpt="on"] form:has(#prompt-textarea) [data-testid*="microphone" i],
-html[data-minimalgpt="on"] form:has(#prompt-textarea) [data-testid*="voice" i],
-html[data-minimalgpt="on"] form:has(#prompt-textarea) [data-testid*="speech" i],
-html[data-minimalgpt="on"] form:has(#prompt-textarea) [data-testid*="dictat" i],
-html[data-minimalgpt="on"] form:has(#prompt-textarea) [data-testid*="audio" i],
-html[data-minimalgpt="on"] form:has(#prompt-textarea) [data-testid*="record" i] {
+/* Only labeled buttons in a recognized composer; never hide generic audio,
+   attachment, upload, or send containers by partial test-ID matches. */
+html[data-minimalgpt="on"] form:has(#prompt-textarea) button[aria-label="Voice mode" i],
+html[data-minimalgpt="on"] form:has(#prompt-textarea) button[aria-label="Modo de voz" i],
+html[data-minimalgpt="on"] form:has(#prompt-textarea) button[aria-label="Microphone" i],
+html[data-minimalgpt="on"] form:has(#prompt-textarea) button[aria-label="Microfone" i],
+html[data-minimalgpt="on"] form:has(#prompt-textarea) button[aria-label="Dictation" i],
+html[data-minimalgpt="on"] form:has(#prompt-textarea) button[aria-label="Ditado" i],
+html[data-minimalgpt="on"] form:has([data-testid="composer-input"]) button[aria-label="Voice mode" i],
+html[data-minimalgpt="on"] form:has([data-testid="composer-input"]) button[aria-label="Modo de voz" i],
+html[data-minimalgpt="on"] form:has([data-testid="composer-input"]) button[aria-label="Microphone" i],
+html[data-minimalgpt="on"] form:has([data-testid="composer-input"]) button[aria-label="Microfone" i],
+html[data-minimalgpt="on"] form:has([data-testid="composer-input"]) button[aria-label="Dictation" i],
+html[data-minimalgpt="on"] form:has([data-testid="composer-input"]) button[aria-label="Ditado" i] {
   display: none !important;
 }
 
-html[data-minimalgpt="on"] main form:has(#prompt-textarea),
-html[data-minimalgpt="on"] main form:has(#prompt-textarea) * {
-  --tw-shadow: 0 0 #0000 !important;
-  --tw-ring-shadow: 0 0 #0000 !important;
-}
-
-/* ---------- Toggle feedback ---------- */
-
+/* Feedback remains readable in light, dark, and high-contrast modes. */
 #minimalgpt-toast {
   position: fixed;
-  right: var(--mgpt-toast-offset);
-  bottom: var(--mgpt-toast-offset);
+  right: 18px;
+  bottom: 18px;
   z-index: 2147483647;
-  padding: 7px 10px;
-  border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+  max-width: min(320px, calc(100vw - 36px));
+  padding: 8px 11px;
+  border: 1px solid CanvasText;
   border-radius: 7px;
   background: Canvas;
   color: CanvasText;
-  font: 600 12px/1.2 system-ui, sans-serif;
-  box-shadow: none;
+  font: 600 12px/1.4 system-ui, sans-serif;
   pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  html[data-minimalgpt="on"] { --mgpt-page-gutter: 12px; }
 }
