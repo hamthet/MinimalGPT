@@ -73,5 +73,8 @@ test('Alt+M shows Portuguese notices without changing the existing toggle behavi
   toggle();
   assert.equal(mode, 'off');
   assert.equal(notice, `MinimalGPT: ${portuguese.statusOff.message} · ${portuguese.discontinuedNotice.message}`);
-  assert.deepEqual(writes, [{ minimalGPTEnabled: true }, { minimalGPTEnabled: false }]);
+  // Values cross a node:vm realm boundary, so compare the primitive preference, not object prototypes.
+  assert.equal(writes.length, 2);
+  assert.equal(writes[0].minimalGPTEnabled, true);
+  assert.equal(writes[1].minimalGPTEnabled, false);
 });
