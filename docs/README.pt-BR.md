@@ -3,7 +3,7 @@
 > [!WARNING]
 > **Projeto descontinuado — precisa de atualização.** Segundo o autor, a versão 0.0.3 funcionava anteriormente, mas falhou em uma tentativa posterior. A versão 0.0.4 é uma revisão de segurança para preservação do projeto, **não uma atualização de compatibilidade validada**. A compatibilidade com a interface atual do ChatGPT **não foi verificada**. Este repositório disponibiliza código para referência, não uma extensão pronta para uso ou com suporte ativo.
 
-[English](../README.md) · **Português (Brasil)** · [Español](README.es.md) · [Русский](README.ru.md)
+[English](../README.md) · **Português (Brasil)** · [Español](README.es.md) · [Русский](README.ru.md) · [简体中文](README.zh-CN.md)
 
 O MinimalGPT é uma extensão experimental para Chromium (Manifest V3) que reduz a poluição visual do ChatGPT sem substituir o aplicativo original. Foi concebida para **uma conversa por aba do navegador**.
 
@@ -26,8 +26,8 @@ O MinimalGPT não intercepta requisições, não acessa credenciais da conta, n�
 - `_locales/pt_BR/messages.json` — nome, descrição e mensagens de estado em português brasileiro.
 - `_locales/es/messages.json` — nome, descrição e mensagens de estado em espanhol.
 - `_locales/ru/messages.json` — nome, descrição e mensagens de estado em russo.
-- `docs/README.es.md` — documentação completa em espanhol.
-- `docs/README.ru.md` — documentação completa em russo.
+- `_locales/zh_CN/messages.json` — nome, descrição e mensagens de estado em chinês simplificado.
+- `docs/README.es.md`, `docs/README.ru.md` e `docs/README.zh-CN.md` — documentação completa nos respectivos idiomas.
 - `minimal.css` — regras visuais opcionais; não foi modificado pela internacionalização.
 - `content.js` — preferência local, atalho `Alt+M` e aviso de estado traduzido.
 - `tests/` — testes básicos estáticos e do script, sem dependências externas; não verificam a compatibilidade em um navegador real.
@@ -35,7 +35,7 @@ O MinimalGPT não intercepta requisições, não acessa credenciais da conta, n�
 
 ## Idiomas
 
-O inglês (`en`) é o idioma padrão; o português brasileiro (`pt_BR`), o espanhol (`es`) e o russo (`ru`) também estão disponíveis. O Chromium escolhe uma tradução disponível segundo o idioma do navegador e usa o inglês como alternativa quando não houver tradução correspondente. O chinês simplificado (`zh_CN`) está planejado, mas ainda não está disponível.
+O inglês (`en`) é o idioma padrão; o português brasileiro (`pt_BR`), o espanhol (`es`), o russo (`ru`) e o chinês simplificado (`zh_CN`) também estão disponíveis. **Os cinco idiomas previstos estão incluídos; o chinês tradicional não está disponível.** O Chromium escolhe uma tradução disponível segundo o idioma do navegador e usa o inglês como alternativa quando não houver tradução correspondente.
 
 **O idioma do navegador pode ser diferente do idioma do ChatGPT.** Traduzir as mensagens do MinimalGPT não altera os seletores CSS usados para reconhecer os controles do site nem corrige a incompatibilidade relatada. Esta etapa não altera o comportamento da extensão.
 
