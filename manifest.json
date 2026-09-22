@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "MinimalGPT (discontinued)",
-  "version": "0.0.5",
+  "version": "0.0.4",
   "description": "Discontinued experimental ChatGPT visual layer. Update required; compatibility unverified. No network interception or remote code.",
   "permissions": ["storage"],
   "content_scripts": [
