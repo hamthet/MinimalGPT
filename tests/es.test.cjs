@@ -40,7 +40,10 @@ test('Alt+M uses the Spanish messages without altering storage or initial OFF be
   let onKeydown;
   const writes = [];
   const document = {
-    documentElement: { setAttribute(name, value) { assert.equal(name, 'data-minimalgpt'); mode = value; } },
+    documentElement: {
+      setAttribute(name, value) { assert.equal(name, 'data-minimalgpt'); mode = value; },
+      getAttribute(name) { assert.equal(name, 'data-minimalgpt'); return mode; }
+    },
     body: { appendChild(node) { toastText = node.textContent; } },
     getElementById() { return null; },
     createElement() { return { setAttribute() {}, remove() {} }; }
