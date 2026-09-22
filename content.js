@@ -10,13 +10,19 @@
     document.documentElement.setAttribute(ROOT_ATTRIBUTE, enabled ? 'on' : 'off');
   }
 
+  function message(key, fallback) {
+    return chrome.i18n?.getMessage(key) || fallback;
+  }
+
   function showToast(enabled) {
     if (!document.body) return;
 
     document.getElementById('minimalgpt-toast')?.remove();
     const toast = document.createElement('div');
     toast.id = 'minimalgpt-toast';
-    toast.textContent = `MinimalGPT: ${enabled ? 'ON' : 'OFF'} · discontinued / update required`;
+    const status = enabled ? message('statusOn', 'ON') : message('statusOff', 'OFF');
+    const notice = message('discontinuedNotice', 'discontinued / update required');
+    toast.textContent = `MinimalGPT: ${status} · ${notice}`;
     toast.setAttribute('role', 'status');
     toast.setAttribute('aria-live', 'polite');
     document.body.appendChild(toast);
