@@ -137,7 +137,7 @@ test('English catalog has complete, nonempty messages for every user-facing stri
   }
 });
 
-test('localized manifest descriptions stay within Chromium's 132-character limit', () => {
+test("localized manifest descriptions stay within Chromium's 132-character limit", () => {
   for (const name of ['en', 'pt_BR', 'es', 'ru', 'zh_CN']) {
     const catalog = JSON.parse(fs.readFileSync(
       path.join(root, '_locales', name, 'messages.json'),
