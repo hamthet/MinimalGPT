@@ -18,12 +18,16 @@ html[data-minimalgpt="on"] {
 html[data-minimalgpt="on"] #stage-slideover-sidebar,
 html[data-minimalgpt="on"] [data-testid="sidebar"],
 html[data-minimalgpt="on"] [data-testid="conversation-sidebar"],
+html[data-minimalgpt="on"] aside:has(#history),
 html[data-minimalgpt="on"] nav[aria-label="Chat history" i],
 html[data-minimalgpt="on"] nav[aria-label="Histórico de chats" i],
 html[data-minimalgpt="on"] [data-testid="top-bar"],
 html[data-minimalgpt="on"] [data-testid="chat-header"],
+html[data-minimalgpt="on"] header:has(a[data-testid="create-new-chat-button"]),
 html[data-minimalgpt="on"] button[data-testid="open-sidebar-button"],
-html[data-minimalgpt="on"] button[data-testid="close-sidebar-button"] {
+html[data-minimalgpt="on"] button[data-testid="close-sidebar-button"],
+html[data-minimalgpt="on"] button[aria-label="Open sidebar" i],
+html[data-minimalgpt="on"] button[aria-label="Close sidebar" i] {
   display: none !important;
 }
 
@@ -41,7 +45,15 @@ html[data-minimalgpt="on"] [data-testid="share-button"] {
 html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[data-testid="good-response-turn-action-button"],
 html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[data-testid="bad-response-turn-action-button"],
 html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[data-testid="read-aloud-turn-action-button"],
+html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[data-testid="voice-play-turn-action-button"],
 html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[data-testid="retry-turn-action-button"],
+html[data-minimalgpt="on"] article[data-turn="assistant"] div:has(> button[data-testid="copy-turn-action-button"]) > button[aria-label="More actions" i],
+html[data-minimalgpt="on"] article[data-turn="assistant"] div:has(> span > button[data-testid="copy-turn-action-button"]) > button[aria-label="More actions" i],
+html[data-minimalgpt="on"] [data-turn-key] .turn-action-controls button[data-testid="good-response-turn-action-button"],
+html[data-minimalgpt="on"] [data-turn-key] .turn-action-controls button[data-testid="bad-response-turn-action-button"],
+html[data-minimalgpt="on"] [data-turn-key] .turn-action-controls button[data-testid="voice-play-turn-action-button"],
+html[data-minimalgpt="on"] [data-turn-key] .turn-action-controls button[data-testid="retry-turn-action-button"],
+html[data-minimalgpt="on"] [data-turn-key] .turn-action-controls button[aria-label="More actions" i],
 html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label="Good response" i],
 html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label="Bad response" i],
 html[data-minimalgpt="on"] [data-testid^="conversation-turn"] button[aria-label="Boa resposta" i],
@@ -61,14 +73,18 @@ html[data-minimalgpt="on"] [data-message-author-role="assistant"] .markdown {
 
 /* These selectors intentionally fail open if ChatGPT changes its composer. */
 html[data-minimalgpt="on"] main form:has(#prompt-textarea),
-html[data-minimalgpt="on"] main form:has([data-testid="composer-input"]) {
+html[data-minimalgpt="on"] main form:has([data-testid="prompt-textarea"]),
+html[data-minimalgpt="on"] main form:has([data-testid="composer-input"]),
+html[data-minimalgpt="on"] main form[data-chatgpt-composer] {
   width: min(calc(100% - (var(--mgpt-page-gutter) * 2)), var(--mgpt-content-width)) !important;
   max-width: var(--mgpt-content-width) !important;
   margin-inline: auto !important;
 }
 
 html[data-minimalgpt="on"] main form:has(#prompt-textarea) > div,
-html[data-minimalgpt="on"] main form:has([data-testid="composer-input"]) > div {
+html[data-minimalgpt="on"] main form:has([data-testid="prompt-textarea"]) > div,
+html[data-minimalgpt="on"] main form:has([data-testid="composer-input"]) > div,
+html[data-minimalgpt="on"] main form[data-chatgpt-composer] > div {
   box-shadow: none !important;
 }
 
@@ -86,6 +102,41 @@ html[data-minimalgpt="on"] form:has([data-testid="composer-input"]) button[aria-
 html[data-minimalgpt="on"] form:has([data-testid="composer-input"]) button[aria-label="Microfone" i],
 html[data-minimalgpt="on"] form:has([data-testid="composer-input"]) button[aria-label="Dictation" i],
 html[data-minimalgpt="on"] form:has([data-testid="composer-input"]) button[aria-label="Ditado" i] {
+  display: none !important;
+}
+
+/* Current ChatGPT composer labels observed in 2026. Keep these exact and
+   scoped to a recognized composer so unrelated page controls fail open. */
+html[data-minimalgpt="on"] :is(
+  form:has(#prompt-textarea),
+  form:has([data-testid="prompt-textarea"]),
+  form[data-chatgpt-composer]
+) button[aria-label="Start dictation" i],
+html[data-minimalgpt="on"] :is(
+  form:has(#prompt-textarea),
+  form:has([data-testid="prompt-textarea"]),
+  form[data-chatgpt-composer]
+) button[aria-label="Dictate button" i],
+html[data-minimalgpt="on"] :is(
+  form:has(#prompt-textarea),
+  form:has([data-testid="prompt-textarea"]),
+  form[data-chatgpt-composer]
+) button[aria-label="Dictate" i],
+html[data-minimalgpt="on"] :is(
+  form:has(#prompt-textarea),
+  form:has([data-testid="prompt-textarea"]),
+  form[data-chatgpt-composer]
+) button[aria-label="Start Voice" i],
+html[data-minimalgpt="on"] :is(
+  form:has(#prompt-textarea),
+  form:has([data-testid="prompt-textarea"]),
+  form[data-chatgpt-composer]
+) button[aria-label="Iniciar ditado" i],
+html[data-minimalgpt="on"] :is(
+  form:has(#prompt-textarea),
+  form:has([data-testid="prompt-textarea"]),
+  form[data-chatgpt-composer]
+) button[aria-label="Iniciar Voz" i] {
   display: none !important;
 }
 
