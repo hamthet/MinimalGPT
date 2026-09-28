@@ -174,6 +174,7 @@ test('CSS is opt-in and avoids known dangerous blanket selectors', () => {
   assert.doesNotMatch(css, /\[data-testid\*="(?:audio|voice|more)"/);
   assert.doesNotMatch(css, /turn-action-button[^\n]*:not\(/);
   assert.doesNotMatch(css, /turn-action-controls[^\n]*button:not\(/);
+  assert.doesNotMatch(css, /\[data-testid\^="conversation-turn"\]\s+button\[aria-label="More actions"/);
   assert.doesNotMatch(css, /html\[data-minimalgpt="on"\]\s+main\s*\{/);
   assert.match(css, /#minimalgpt-toast/);
 });
@@ -181,6 +182,7 @@ test('CSS is opt-in and avoids known dangerous blanket selectors', () => {
 test('CSS includes narrow 2026 compatibility anchors without broad fallbacks', () => {
   assert.match(css, /voice-play-turn-action-button/);
   assert.match(css, /button\[aria-label="More actions" i\]/);
+  assert.match(css, /article\[data-turn="assistant"\] div:has\(> (?:span > )?button\[data-testid="copy-turn-action-button"\]\)/);
   assert.match(css, /form\[data-chatgpt-composer\]/);
   assert.match(css, /button\[aria-label="Start dictation" i\]/);
   assert.match(css, /button\[aria-label="Iniciar ditado" i\]/);
