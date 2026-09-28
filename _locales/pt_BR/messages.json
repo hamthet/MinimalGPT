@@ -4,7 +4,7 @@
     "description": "Nome exibido pelo Chromium na página de extensões."
   },
   "extensionDescription": {
-    "message": "Extensão visual experimental para o ChatGPT, descontinuada. Precisa de atualização; compatibilidade não verificada. Sem interceptação de rede ou código remoto.",
+    "message": "MinimalGPT descontinuado. Precisa de atualização; compatibilidade não verificada. Sem interceptação de rede nem código remoto.",
     "description": "Descrição exibida pelo Chromium na página de extensões."
   },
   "statusOn": {
